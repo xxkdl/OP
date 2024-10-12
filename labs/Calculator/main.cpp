@@ -1,4 +1,4 @@
-#include <iostream>
+я╗┐#include <iostream>
 #include <stack>
 #include <string>
 #include <cctype>
@@ -6,7 +6,7 @@
 using namespace std;
 
 
-//Визначаємо приоритетн?сть д?й
+// Prioritize actions
 int precedence(char st) {
     if (st == '+' || st == '-') return 1;
     if (st == '*' || st == '/') return 2;
@@ -14,7 +14,7 @@ int precedence(char st) {
 }
 
 
-//Задаємо арифметичн? операц?ї
+// Define arithmetic operations
 int applyOperation(int n1, int n2, char st) {
     switch (st) {
     case '*':
@@ -32,22 +32,22 @@ int applyOperation(int n1, int n2, char st) {
 }
 
 
-// Оц?нюмо вираження
+// Evaluate the expression
 int evaluateExpression(const string& expression) {
-    stack<int> number; //Стек для збер?гання чисел / операнд?в
-    stack<char> oper; //Стек для збер?гання оператор?в
+    stack<int> number; //Stack for storing numbers / operands
+    stack<char> oper; //Stack for storing operators
 
     istringstream iss(expression);
     string token;
 
 
-    //?гноруємо проб?ли
+    //Ignore spaces
     for (size_t i = 0; i < expression.length(); i++) {
         if (expression[i] == ' ') continue;
     }
 
 
-    // Обробка токен?в 
+    // Processing tokens 
     while (iss >> token) {
         if (isdigit(token[0])) {
             number.push(stoi(token));
@@ -56,38 +56,36 @@ int evaluateExpression(const string& expression) {
             while (!oper.empty() && precedence(oper.top()) >= precedence(token[0])) {
                 int n1 = number.top(); number.pop();
                 int n2 = number.top(); number.pop();
-                char o1 = oper.top(); oper.pop();
-                number.push(applyOperation(n1, n2, o1));
+                char op = oper.top(); oper.pop();
+                number.push(applyOperation(n1, n2, op));
             }
             oper.push(token[0]);
         }
     }
 
-    // Остаточне опрацювання оператор?в, що залишилися
+    // Final processing of the remaining operators
     while (!oper.empty()) {
         int n2 = number.top(); number.pop();
         int n1 = number.top(); number.pop();
-        char o2 = oper.top(); oper.pop();
-        number.push(applyOperation(n1, n2, o2));
+        char st = oper.top(); oper.pop();
+        number.push(applyOperation(n1, n2, st));
     }
 
     return number.top();
 }
 
-// Вивод на єкран 
+// Display on the screen 
 int main() {
-    setlocale(LC_ALL, "ukr");
     string expression;
-    cout << "Напиш?ть ваш приклад: ";
+    cout << "Write your example : ";
     getline(cin, expression);
 
     try {
         int result = evaluateExpression(expression);
-        cout << "В?дпов?дь: " << result << endl;
+        cout << "Result: " << result << endl;
     }
     catch (const runtime_error& e) {
-        cout << "Помилка: " << e.what() << endl;
+        cout << "Error: " << e.what() << endl;
     }
-
     return 0;
-} 
+}
