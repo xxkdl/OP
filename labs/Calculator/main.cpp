@@ -6,7 +6,7 @@
 using namespace std;
 
 
-//┬шчэрўр║ью яЁшюЁшЄхЄэ│ёЄ№ ф│щ
+//Визначаємо приоритетн?сть д?й
 int precedence(char st) {
     if (st == '+' || st == '-') return 1;
     if (st == '*' || st == '/') return 2;
@@ -14,7 +14,7 @@ int precedence(char st) {
 }
 
 
-//╟рфр║ью рЁшЇьхЄшўэ│ юяхЁрЎ│┐
+//Задаємо арифметичн? операц?ї
 int applyOperation(int n1, int n2, char st) {
     switch (st) {
     case '*':
@@ -32,22 +32,22 @@ int applyOperation(int n1, int n2, char st) {
 }
 
 
-// ╬Ў│э■ью тшЁрцхээ 
+// Оц?нюмо вираження
 int evaluateExpression(const string& expression) {
-    stack<int> number; //╤Єхъ фы  чсхЁ│урээ  ўшёхы / юяхЁрэф│т
-    stack<char> oper; //╤Єхъ фы  чсхЁ│урээ  юяхЁрЄюЁ│т
+    stack<int> number; //Стек для збер?гання чисел / операнд?в
+    stack<char> oper; //Стек для збер?гання оператор?в
 
     istringstream iss(expression);
     string token;
 
 
-    //▓уэюЁє║ью яЁюс│ыш
+    //?гноруємо проб?ли
     for (size_t i = 0; i < expression.length(); i++) {
         if (expression[i] == ' ') continue;
     }
 
 
-    // ╬сЁюсър Єюъхэ│т 
+    // Обробка токен?в 
     while (iss >> token) {
         if (isdigit(token[0])) {
             number.push(stoi(token));
@@ -63,7 +63,7 @@ int evaluateExpression(const string& expression) {
         }
     }
 
-    // ╬ёЄрЄюўэх юяЁрЎ■трээ  юяхЁрЄюЁ│т, ∙ю чрыш°шышё 
+    // Остаточне опрацювання оператор?в, що залишилися
     while (!oper.empty()) {
         int n2 = number.top(); number.pop();
         int n1 = number.top(); number.pop();
@@ -74,19 +74,19 @@ int evaluateExpression(const string& expression) {
     return number.top();
 }
 
-// ┬штюф эр ║ъЁрэ 
+// Вивод на єкран 
 int main() {
     setlocale(LC_ALL, "ukr");
     string expression;
-    cout << "═ряш°│Є№ тр° яЁшъырф: ";
+    cout << "Напиш?ть ваш приклад: ";
     getline(cin, expression);
 
     try {
         int result = evaluateExpression(expression);
-        cout << "┬│фяют│ф№: " << result << endl;
+        cout << "В?дпов?дь: " << result << endl;
     }
     catch (const runtime_error& e) {
-        cout << "╧юьшыър: " << e.what() << endl;
+        cout << "Помилка: " << e.what() << endl;
     }
 
     return 0;
